@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Schoolbell Driver</string>
+    <string name="title_activity_main">Schoolbell Driver</string>
+    <string name="package_name">dev.engigrow.schoolbell.driver</string>
+    <string name="custom_url_scheme">dev.engigrow.schoolbell.driver</string>
+</resources>
