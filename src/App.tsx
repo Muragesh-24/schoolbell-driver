@@ -4,7 +4,7 @@ import type { BackgroundGeolocationPlugin, Location, CallbackError } from "@capa
 
 const BackgroundGeolocation = registerPlugin<BackgroundGeolocationPlugin>("BackgroundGeolocation");
 
-const SERVER = "https://schoolbelldemo.engigrow.dev";
+const SERVER = "http://20.164.0.74:3000";
 
 type Screen = "home" | "tracking" | "error";
 

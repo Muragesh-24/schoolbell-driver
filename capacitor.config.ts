@@ -5,7 +5,7 @@ const config: CapacitorConfig = {
   appName: "Schoolbell Driver",
   webDir: "dist",
   android: {
-    allowMixedContent: false,
+    allowMixedContent: true,
   },
   plugins: {
     BackgroundGeolocation: {
