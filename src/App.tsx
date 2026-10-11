@@ -8,6 +8,12 @@ const SERVER = "https://schoolbelldemo.engigrow.dev";
 
 type Screen = "home" | "tracking" | "error";
 
+async function requestNotificationPermission() {
+  if ("Notification" in window && Notification.permission === "default") {
+    await Notification.requestPermission();
+  }
+}
+
 function App() {
   const [screen, setScreen] = useState<Screen>("home");
   const [token, setToken] = useState("");
@@ -15,11 +21,15 @@ function App() {
   const [lastPing, setLastPing] = useState<string | null>(null);
   const [pings, setPings] = useState(0);
   const [errorMsg, setErrorMsg] = useState("");
+  const [batteryHint, setBatteryHint] = useState(false);
   const watcherId = useRef<string | null>(null);
 
   async function startTracking() {
     const t = token.trim();
     if (!t) return;
+
+    // Request notification permission (Android 13+ needs this for foreground service)
+    await requestNotificationPermission();
 
     // Verify token with server first
     try {
@@ -71,6 +81,7 @@ function App() {
     );
 
     watcherId.current = id;
+    setBatteryHint(true);
     setScreen("tracking");
   }
 
@@ -81,6 +92,7 @@ function App() {
     }
     setPings(0);
     setLastPing(null);
+    setBatteryHint(false);
     setScreen("home");
   }
 
@@ -134,9 +146,23 @@ function App() {
             <p style={styles.infoText}>{pings} update{pings !== 1 ? "s" : ""} sent</p>
             {lastPing && <p style={styles.infoText}>Last ping: {lastPing}</p>}
           </div>
+
+          {/* Battery optimization warning */}
+          {batteryHint && (
+            <div style={styles.warnBox}>
+              <p style={styles.warnText}>
+                ⚠️ <strong>Important:</strong> Go to Settings → Apps → Schoolbell Driver → Battery → select <strong>"Unrestricted"</strong> so tracking works when screen is off.
+              </p>
+              <button style={{ ...styles.btn, ...styles.btnSecondary, marginTop: 8, padding: "8px 0", fontSize: 12 }}
+                onClick={() => setBatteryHint(false)}>
+                Got it
+              </button>
+            </div>
+          )}
+
           <div style={styles.successBox}>
             <p style={styles.successText}>
-              ✅ Tracking continues in background even when screen is off
+              ✅ Notification is active — tracking works in background
             </p>
           </div>
           <button style={{ ...styles.btn, ...styles.btnDanger }} onClick={stopTracking}>
@@ -231,6 +257,14 @@ const styles: Record<string, React.CSSProperties> = {
     width: "100%",
   },
   infoText: { fontSize: 13, color: "#166534", margin: "2px 0" },
+  warnBox: {
+    background: "#fffbeb",
+    border: "1px solid #fcd34d",
+    borderRadius: 10,
+    padding: "10px 14px",
+    width: "100%",
+  },
+  warnText: { fontSize: 12, color: "#92400e", margin: 0, lineHeight: 1.5 },
   successBox: {
     background: "#f0fdf4",
     border: "1px solid #bbf7d0",
