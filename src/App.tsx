@@ -6,7 +6,7 @@ import "leaflet/dist/leaflet.css";
 
 const BackgroundGeolocation = registerPlugin<BackgroundGeolocationPlugin>("BackgroundGeolocation");
 
-const SERVER = "https://schoolbelldemo.engigrow.dev";
+const SERVER = "https://acadenginedemo.engigrow.dev";
 
 type Screen = "setup" | "tracking" | "error";
 type LatLng = { lat: number; lng: number };
@@ -210,7 +210,7 @@ function App() {
 
     const id = await BackgroundGeolocation.addWatcher(
       {
-        backgroundMessage: "Schoolbell is broadcasting your bus location to parents.",
+        backgroundMessage: "Acadengine is broadcasting your bus location to parents.",
         backgroundTitle:   "🚌 Bus Tracking Active",
         requestPermissions: true,
         stale:  false,
@@ -289,7 +289,7 @@ function App() {
       <div style={styles.page}>
         <div style={styles.header}>
           <div style={styles.logoRing}><span style={{ fontSize: 28 }}>🚌</span></div>
-          <p style={styles.appName}>SCHOOLBELL DRIVER</p>
+          <p style={styles.appName}>ACADENGINE DRIVER</p>
           <p style={styles.appSub}>Location Tracking</p>
         </div>
 
@@ -327,7 +327,7 @@ function App() {
             />
           </div>
           <p style={styles.batteryNote}>
-            Battery Settings → Schoolbell Driver → Battery → <strong>"Unrestricted"</strong>
+            Battery Settings → Acadengine Driver → Battery → <strong>"Unrestricted"</strong>
           </p>
         </div>
 
